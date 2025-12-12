@@ -5,7 +5,7 @@
   align-items: center;
   padding: 20px;
   border-radius: 2rem;
-  background-color: antiquewhite;
+  
 }
 .search-input {
   display: flex;
@@ -190,4 +190,18 @@ td.num {
   .card {
     padding: 12px;
   }
+}
+#item-cost{
+  background-color: #ff00002b;
+  text-align: center;
+  font-weight: bold;
+}
+#item-sell{
+  background-color: #00ff444f;
+  text-align: center;
+  font-weight: bold;
+}
+#item-name{
+  text-align: right;
+  font-weight: bold;
 }
