@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="ar" dir="rtl">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -11,9 +11,18 @@
       integrity="sha384-sRIl4kxILFvY47J16cr9ZwB07vP4J8+LH7qKQnuqkuIAvNWLzeN8tE5YBujZqJLB"
       crossorigin="anonymous"
     />
+    <style>
+      #camera video{
+        width: 100%;
+        max-width: 640px;
+        height: auto;
+        margin-bottom: 20px;
+      }
+    </style>
   </head>
   <body>
-    <div class="container">
+    <div class="containers">
+      <div id="camera" style="width: 100%;"></div>
       <div class="search-input">
         <input
           id="search"
@@ -35,10 +44,10 @@
             <table id="itemsTable" aria-label="items table">
               <thead>
                 <tr>
-                  <th data-key="sell">Sell (USD)</th>
-                  <th data-key="cost">Cost (USD)</th>
-                  <th  data-key="name">Name</th>
-                  <th data-key="id">ID</th>
+                  <!-- <th data-key="cost">Cost (USD)</th> -->
+                  <th data-key="id">كود</th>
+                  <th  data-key="name">اسم</th>
+                  <th data-key="sell">السعر (دينار)</th>
                 </tr>
               </thead>
               <tbody>
@@ -49,10 +58,52 @@
       </div>
     </div>
   </body>
+    <script src="https://cdn.jsdelivr.net/npm/@ericblade/quagga2/dist/quagga.min.js"></script>
+
+  <script>
+    const quaggaConf={
+    inputStream:{
+        name:"Live",
+        type:"LiveStream",
+        target:document.querySelector('#camera'),
+        constraints:{
+            width:640,
+            height:480,
+            facingMode:"environment"
+        }
+    
+},
+decoder:{
+    readers:["code_128_reader"]
+}
+    };
+    Quagga.init(quaggaConf,function(err){
+        if(err){
+            console.log(err);
+            return;
+        }
+        console.log("Initialization finished. Ready to start");
+        Quagga.start();
+    });
+    Quagga.onDetected(function(result){
+        let code=result.codeResult.code;
+        document.getElementById("search").value=code;
+        var event=new Event('input',{
+            bubbles:true,
+            cancelable:true,
+        });
+        document.getElementById("search").dispatchEvent(event);
+        Quagga.stop();
+        setTimeout(function(){
+            Quagga.start();
+        },2000);
+    });
+  </script>
   <script src="{{url_for('static',filename='main.js') }}"></script>
   <script
     src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js"
     integrity="sha384-FKyoEForCGlyvwx9Hj09JcYn3nv7wiPVlz7YYwJrWVcXK/BmnVDxM+D2scQbITxI"
     crossorigin="anonymous"
   ></script>
+
 </html>

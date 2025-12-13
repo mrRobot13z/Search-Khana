@@ -26,7 +26,7 @@ function escapeHtml(str) {
 
 function renderRows(rows) {
     if (rows.length === 0) {
-        tbody.innerHTML = '<tr><td colspan="4" style="text-align: center; padding: 20px;">No items match your search.</td></tr>';
+        tbody.innerHTML = '<tr><td colspan="4" style="text-align: center; padding: 20px;">لم يتم العثور على اي عنصر.</td></tr>';
         return;
     }
     tbody.innerHTML = rows
@@ -34,10 +34,10 @@ function renderRows(rows) {
             (r) => `
         <tr>
           
-        <td id="item-sell" class="num">${formatCurrency(r.sell)}</td>
-        <td id="item-cost" class="num">${formatCurrency(r.cost)}</td>
-        <td id="item-name" style="text-align: right;" class="name-col">${escapeHtml(r.name)}</td>
         <td class="id-col">${r.barcode}</td>
+        
+        <td id="item-name" style="text-align: right;" class="name-col">${escapeHtml(r.name)}</td>
+        <td id="item-sell" class="num">${formatCurrency(r.sell)}</td>
         </tr>
       `
         )
@@ -77,9 +77,9 @@ searchInput.addEventListener("input", (e) => {
             // Check name
             item.name.toLowerCase().includes(searchTerm) ||
             // Check barcode
-            // item.barcode.includes(searchTerm) ||
+            item.barcode.includes(searchTerm) 
             // Check ID (needs to be converted to string for includes)
-            item.id.toString().includes(searchTerm)
+            // item.id.toString().includes(searchTerm)
         );
     });
 
